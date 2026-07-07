@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Welcome, {{ user.name }} 👋</h2>
+
+    <hr>
+
+    <div class="row mt-4">
+
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h3>0</h3>
+                    <p>Total Applications</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h3>0</h3>
+                    <p>Interviews</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h3>0</h3>
+                    <p>Offers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h3>0</h3>
+                    <p>Rejected</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-5">
+
+        <a href="#" class="btn btn-primary btn-lg">
+            + Add New Application
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
