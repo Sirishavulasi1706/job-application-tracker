@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}
+Job Match AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <h2 class="mb-4">
+                🤖 Resume vs Job Description
+            </h2>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+
+                    {{ form.resume.label(class="form-label") }}
+
+                    {{ form.resume(class="form-control") }}
+
+                </div>
+
+                <div class="mb-3">
+
+                    {{ form.job_description.label(class="form-label") }}
+
+                    {{ form.job_description(
+                        class="form-control",
+                        rows="10"
+                    ) }}
+
+                </div>
+
+                {{ form.submit(
+                    class="btn btn-primary"
+                ) }}
+
+            </form>
+
+            {% if result %}
+
+            <hr>
+
+            <h3>🎯 Resume Match Score</h3>
+
+            <div class="progress mb-4" style="height:30px;">
+
+                <div
+                    class="progress-bar bg-success"
+                    style="width: {{ result.match_score }}%;">
+
+                    {{ result.match_score }}%
+
+                </div>
+
+            </div>
+
+            <h4>✅ Matching Skills</h4>
+
+            {% for skill in result.matching_skills %}
+
+            <span class="badge bg-success me-2 mb-2">
+                {{ skill }}
+            </span>
+
+            {% endfor %}
+
+            <hr>
+
+            <h4>❌ Missing Skills</h4>
+
+            {% for skill in result.missing_skills %}
+
+            <span class="badge bg-danger me-2 mb-2">
+                {{ skill }}
+            </span>
+
+            {% endfor %}
+
+            <hr>
+
+            <h4>💡 Suggestions</h4>
+
+            <ul>
+
+            {% for suggestion in result.suggestions %}
+
+            <li>{{ suggestion }}</li>
+
+            {% endfor %}
+
+            </ul>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

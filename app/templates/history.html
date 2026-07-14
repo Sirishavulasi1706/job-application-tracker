@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI History
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📜 AI Resume Analysis History</h2>
+
+{% if analyses %}
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+
+        <tr>
+            <th>ID</th>
+            <th>Resume</th>
+            <th>Date</th>
+            <th>Analysis</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for item in analyses %}
+
+        <tr>
+
+            <td>{{ item.id }}</td>
+
+            <td>{{ item.resume_filename }}</td>
+
+            <td>{{ item.created_at.strftime("%d-%m-%Y %H:%M") }}</td>
+
+            <td>
+
+                <details>
+
+                    <summary>View Analysis</summary>
+
+                    <pre style="white-space: pre-wrap;">
+{{ item.analysis }}
+                    </pre>
+
+                </details>
+
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<div class="alert alert-info">
+
+    No AI analyses found.
+
+</div>
+
+{% endif %}
+
+{% endblock %}

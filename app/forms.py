@@ -1,13 +1,28 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from flask_wtf.file import FileField, FileAllowed
+from wtforms import (
+    StringField,
+    PasswordField,
+    SubmitField,
+    TextAreaField,
+    SelectField,
+    DateField
+)
+from wtforms.validators import (
+    DataRequired,
+    Email,
+    EqualTo,
+    Length,
+    Optional,
+    URL
+)
 
 
 class RegistrationForm(FlaskForm):
 
     name = StringField(
         "Full Name",
-        validators=[DataRequired(), Length(min=3, max=100)]
+        validators=[DataRequired(), Length(min=2, max=100)]
     )
 
     email = StringField(
@@ -24,7 +39,7 @@ class RegistrationForm(FlaskForm):
         "Confirm Password",
         validators=[
             DataRequired(),
-            EqualTo("password", message="Passwords must match.")
+            EqualTo("password")
         ]
     )
 
@@ -44,3 +59,69 @@ class LoginForm(FlaskForm):
     )
 
     submit = SubmitField("Login")
+
+
+class ApplicationForm(FlaskForm):
+
+    company = StringField(
+        "Company Name",
+        validators=[DataRequired()]
+    )
+
+    role = StringField(
+        "Job Role",
+        validators=[DataRequired()]
+    )
+
+    location = StringField(
+        "Location",
+        validators=[Optional()]
+    )
+
+    status = SelectField(
+        "Application Status",
+        choices=[
+            ("Applied", "Applied"),
+            ("Interview", "Interview"),
+            ("Offer", "Offer"),
+            ("Rejected", "Rejected")
+        ],
+        validators=[DataRequired()]
+    )
+
+    job_link = StringField(
+        "Job Link",
+        validators=[Optional(), URL()]
+    )
+
+    applied_date = DateField(
+        "Applied Date",
+        format="%Y-%m-%d",
+        validators=[Optional()]
+    )
+
+    notes = TextAreaField(
+        "Notes",
+        validators=[Optional()]
+    )
+
+    submit = SubmitField("Save Application")
+
+
+class JobMatchForm(FlaskForm):
+
+    resume = FileField(
+        "Upload Resume",
+        validators=[
+            FileAllowed(["pdf"], "PDF files only!")
+        ]
+    )
+
+    job_description = TextAreaField(
+        "Job Description",
+        validators=[
+            DataRequired()
+        ]
+    )
+
+    submit = SubmitField("Analyze Match")

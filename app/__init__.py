@@ -25,15 +25,21 @@ def create_app():
     bcrypt.init_app(app)
     login_manager.init_app(app)
 
-    # Import blueprints
     from app.routes.main import main
     from app.routes.auth import auth
     from app.routes.dashboard import dashboard
+    from app.routes.applications import applications
+    from app.routes.resume import resume
+    from app.routes.job_match import job_match
+    from app.routes.history import history
 
-    # Register blueprints
     app.register_blueprint(main)
     app.register_blueprint(auth)
     app.register_blueprint(dashboard)
+    app.register_blueprint(applications)
+    app.register_blueprint(resume)
+    app.register_blueprint(job_match)
+    app.register_blueprint(history)
 
     from app import models
 

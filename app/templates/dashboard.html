@@ -1,3 +1,4 @@
+```html
 {% extends "base.html" %}
 
 {% block title %}
@@ -6,60 +7,228 @@ Dashboard
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="container py-4">
 
-    <h2>Welcome, {{ user.name }} 👋</h2>
+    <!-- Hidden values for dashboard.js -->
 
-    <hr>
+    <input type="hidden" id="pending" value="{{ pending }}">
+    <input type="hidden" id="interviews" value="{{ interviews }}">
+    <input type="hidden" id="offers" value="{{ offers }}">
+    <input type="hidden" id="rejected" value="{{ rejected }}">
 
-    <div class="row mt-4">
+    <!-- Header -->
 
-        <div class="col-md-3">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h3>0</h3>
-                    <p>Total Applications</p>
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            📊 Dashboard
+        </h2>
+
+        <p class="text-muted">
+            Welcome back, {{ current_user.name }}!
+        </p>
+
+    </div>
+
+    <!-- Statistic Cards -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body text-center">
+                    <h5>Total Applications</h5>
+                    <h1 class="display-5 fw-bold text-primary">
+                        {{ total_applications }}
+                    </h1>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h3>0</h3>
-                    <p>Interviews</p>
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body text-center">
+                    <h5>Resume Analyses</h5>
+                    <h1 class="display-5 fw-bold text-dark">
+                        {{ total_resume_analyses }}
+                    </h1>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h3>0</h3>
-                    <p>Offers</p>
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body text-center">
+                    <h5>Applied</h5>
+                    <h1 class="display-5 fw-bold text-warning">
+                        {{ pending }}
+                    </h1>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h3>0</h3>
-                    <p>Rejected</p>
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body text-center">
+                    <h5>Interviews</h5>
+                    <h1 class="display-5 fw-bold text-info">
+                        {{ interviews }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body text-center">
+                    <h5>Offers</h5>
+                    <h1 class="display-5 fw-bold text-success">
+                        {{ offers }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body text-center">
+                    <h5>Rejected</h5>
+                    <h1 class="display-5 fw-bold text-danger">
+                        {{ rejected }}
+                    </h1>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <div class="mt-5">
+    <!-- Charts -->
 
-        <a href="#" class="btn btn-primary btn-lg">
-            + Add New Application
-        </a>
+    <div class="row mt-5">
+
+        <div class="col-lg-8 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Applications by Status</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div style="height:320px;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Status Distribution</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div style="height:320px;">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Recent Applications -->
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Recent Applications</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Applied Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% if recent_applications %}
+
+                        {% for app in recent_applications %}
+
+                        <tr>
+
+                            <td>{{ app.company }}</td>
+
+                            <td>{{ app.role }}</td>
+
+                            <td>{{ app.status }}</td>
+
+                            <td>
+
+                                {% if app.applied_date %}
+                                    {{ app.applied_date }}
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td colspan="4" class="text-center text-muted">
+                                No applications yet.
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
     </div>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
 {% endblock %}
+```

@@ -1,0 +1,75 @@
+body{
+    background:#f5f7fb;
+}
+
+/* Dashboard Header */
+
+h2{
+    font-weight:700;
+}
+
+/* Cards */
+
+.card{
+    border:none;
+    border-radius:18px;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 20px 40px rgba(0,0,0,.12)!important;
+}
+
+.card-body{
+    padding:28px;
+}
+
+.display-5{
+    font-size:2.7rem;
+    font-weight:700;
+}
+
+/* Table */
+
+.table{
+    margin-bottom:0;
+}
+
+.table th{
+    border:none;
+    font-weight:600;
+}
+
+.table td{
+    vertical-align:middle;
+}
+
+/* Chart Cards */
+
+.card-header{
+    background:white;
+    border:none;
+    font-weight:600;
+    font-size:18px;
+}
+
+/* Chart Containers */
+
+#statusChart,
+#pieChart{
+    width:100%!important;
+    height:100%!important;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .display-5{
+
+        font-size:2rem;
+
+    }
+
+}

@@ -12,32 +12,54 @@
     </title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
     <div class="container">
-
-        <a class="navbar-brand" href="/">Job Application Tracker</a>
-
+        <a class="navbar-brand fw-bold" href="/">
+            <i class="bi bi-briefcase-fill"></i>
+            JobTracker AI
+        </a>
         <div class="navbar-nav ms-auto">
-
-            <a class="nav-link" href="/">Home</a>
-
+            <a class="nav-link" href="/">
+                <i class="bi bi-house"></i> Home
+            </a>
             {% if current_user.is_authenticated %}
-
-                <a class="nav-link" href="/logout">Logout</a>
-
+                <a class="nav-link" href="/dashboard">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+                <a class="nav-link" href="/applications">
+                    <i class="bi bi-table"></i> Applications
+                </a>
+                <a class="nav-link" href="/resume">
+                    <i class="bi bi-file-earmark-person"></i> Resume AI
+                </a>
+                <a class="nav-link" href="/job-match">
+                    Job Match AI
+                </a>
+                <a class="nav-link" href="/history">
+                    AI History
+                </a>
+                <a class="nav-link" href="/logout">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
             {% else %}
-
-                <a class="nav-link" href="/register">Register</a>
-                <a class="nav-link" href="/login">Login</a>
-
+                <a class="nav-link" href="/register">
+                    <i class="bi bi-person-plus"></i> Register
+                </a>
+                <a class="nav-link" href="/login">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
             {% endif %}
-
         </div>
-
     </div>
 </nav>
 

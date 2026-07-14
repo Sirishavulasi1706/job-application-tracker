@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Job Application
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">Add New Job Application</h2>
+
+    <form method="POST">
+
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.company.label(class="form-label") }}
+            {{ form.company(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.role.label(class="form-label") }}
+            {{ form.role(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.location.label(class="form-label") }}
+            {{ form.location(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.status.label(class="form-label") }}
+            {{ form.status(class="form-select") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.job_link.label(class="form-label") }}
+            {{ form.job_link(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.applied_date.label(class="form-label") }}
+            {{ form.applied_date(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.notes.label(class="form-label") }}
+            {{ form.notes(class="form-control", rows="4") }}
+        </div>
+
+        {{ form.submit(class="btn btn-primary") }}
+
+    </form>
+
+</div>
+
+{% endblock %}
