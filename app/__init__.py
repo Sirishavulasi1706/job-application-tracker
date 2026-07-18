@@ -32,6 +32,8 @@ def create_app():
     from app.routes.resume import resume
     from app.routes.job_match import job_match
     from app.routes.history import history
+    from app.routes.interview import interview
+    from app.routes.resume_optimizer import resume_optimizer
 
     app.register_blueprint(main)
     app.register_blueprint(auth)
@@ -40,6 +42,8 @@ def create_app():
     app.register_blueprint(resume)
     app.register_blueprint(job_match)
     app.register_blueprint(history)
+    app.register_blueprint(interview)
+    app.register_blueprint(resume_optimizer)
 
     from app import models
 

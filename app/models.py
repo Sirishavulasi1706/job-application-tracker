@@ -89,3 +89,66 @@ class ResumeAnalysis(db.Model):
         db.DateTime,
         default=db.func.now()
     )
+
+
+class InterviewPreparation(db.Model):
+
+    __tablename__ = "interview_preparations"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    application_id = db.Column(
+        db.Integer,
+        db.ForeignKey("job_applications.id"),
+        nullable=False
+    )
+
+    questions = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=db.func.now()
+    )
+
+
+class ResumeOptimization(db.Model):
+
+    __tablename__ = "resume_optimizations"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    resume_analysis_id = db.Column(
+        db.Integer,
+        db.ForeignKey("resume_analyses.id"),
+        nullable=False
+    )
+
+    job_description = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    optimization = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=db.func.now()
+    )

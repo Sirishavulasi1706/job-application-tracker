@@ -1,8 +1,8 @@
+
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
 from app.models import JobApplication, ResumeAnalysis
-from app.ai.career_insights import generate_career_insights
 
 dashboard = Blueprint("dashboard", __name__)
 
@@ -11,43 +11,46 @@ dashboard = Blueprint("dashboard", __name__)
 @login_required
 def dashboard_home():
 
-    total_applications = JobApplication.query.filter_by(
+    applications = JobApplication.query.filter_by(
         user_id=current_user.id
-    ).count()
+    ).all()
+
+    total_applications = len(applications)
 
     total_resume_analyses = ResumeAnalysis.query.filter_by(
         user_id=current_user.id
     ).count()
 
-    pending = JobApplication.query.filter_by(
-        user_id=current_user.id,
-        status="Applied"
-    ).count()
+    pending = sum(a.status == "Applied" for a in applications)
 
-    interviews = JobApplication.query.filter_by(
-        user_id=current_user.id,
-        status="Interview"
-    ).count()
+    interviews = sum(a.status == "Interview" for a in applications)
 
-    offers = JobApplication.query.filter_by(
-        user_id=current_user.id,
-        status="Offered"
-    ).count()
+    offers = sum(a.status == "Offered" for a in applications)
 
-    rejected = JobApplication.query.filter_by(
-        user_id=current_user.id,
-        status="Rejected"
-    ).count()
+    rejected = sum(a.status == "Rejected" for a in applications)
 
-    recent_applications = (
-        JobApplication.query
-        .filter_by(user_id=current_user.id)
-        .order_by(JobApplication.created_at.desc())
-        .limit(5)
-        .all()
-    )
+    success_rate = 0
 
-    # Get latest resume analysis
+    if total_applications:
+
+        success_rate = round(
+            (offers / total_applications) * 100
+        )
+
+    interview_rate = 0
+
+    if total_applications:
+
+        interview_rate = round(
+            (interviews / total_applications) * 100
+        )
+
+    recent_applications = sorted(
+        applications,
+        key=lambda x: x.created_at,
+        reverse=True
+    )[:5]
+
     latest_resume = (
         ResumeAnalysis.query
         .filter_by(user_id=current_user.id)
@@ -58,18 +61,29 @@ def dashboard_home():
     career_insights = None
 
     if latest_resume:
-        career_insights = generate_career_insights(
-            latest_resume.analysis
-        )
+        career_insights = latest_resume.career_insights
 
     return render_template(
         "dashboard.html",
+
         total_applications=total_applications,
+
         total_resume_analyses=total_resume_analyses,
+
         pending=pending,
+
         interviews=interviews,
+
         offers=offers,
+
         rejected=rejected,
+
+        success_rate=success_rate,
+
+        interview_rate=interview_rate,
+
         recent_applications=recent_applications,
+
         career_insights=career_insights
     )
+
