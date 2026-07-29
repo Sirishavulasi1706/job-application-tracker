@@ -1,19 +1,193 @@
 {% extends "base.html" %}
 
 {% block title %}
-Home
+JobTracker AI
 {% endblock %}
 
 {% block content %}
 
-<h1>Welcome to Job Application Tracker</h1>
+<!-- Hero Section -->
 
-<p class="lead">
-Track your job applications, interview rounds, and placement progress in one place.
-</p>
+<div class="row align-items-center py-5">
 
-<a href="#" class="btn btn-primary">
-Get Started
-</a>
+    <div class="col-lg-6">
+
+        <span class="badge bg-primary mb-3 px-3 py-2">
+            🚀 AI-Powered Career Assistant
+        </span>
+
+        <h1 class="display-4 fw-bold mb-4">
+
+            Track Jobs.
+            <span class="text-primary">Optimize Resume.</span>
+            Land Your Dream Career.
+
+        </h1>
+
+        <p class="lead text-muted mb-4">
+
+            JobTracker AI helps students and professionals organize job
+            applications, analyze resumes with AI, prepare for interviews,
+            and receive automated interview reminders—all in one platform.
+
+        </p>
+
+        {% if current_user.is_authenticated %}
+
+        <a href="{{ url_for('dashboard.dashboard_home') }}"
+           class="btn btn-primary btn-lg me-3">
+
+            <i class="bi bi-speedometer2"></i>
+            Go to Dashboard
+
+        </a>
+
+        {% else %}
+
+        <a href="{{ url_for('auth.register') }}"
+           class="btn btn-primary btn-lg me-3">
+
+            Get Started
+
+        </a>
+
+        <a href="{{ url_for('auth.login') }}"
+           class="btn btn-outline-primary btn-lg">
+
+            Login
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+    <div class="col-lg-6 text-center">
+
+        <i class="bi bi-briefcase-fill text-primary"
+           style="font-size:220px;"></i>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- Features -->
+
+<div class="text-center mb-5">
+
+    <h2 class="fw-bold">
+        Everything You Need
+    </h2>
+
+    <p class="text-muted">
+        Manage your entire placement journey from one dashboard.
+    </p>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+
+        <div class="card h-100 p-4 text-center">
+
+            <i class="bi bi-briefcase-fill fs-1 text-primary"></i>
+
+            <h4 class="mt-3">
+                Job Tracking
+            </h4>
+
+            <p class="text-muted">
+
+                Organize applications, monitor progress,
+                and never lose track of opportunities.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card h-100 p-4 text-center">
+
+            <i class="bi bi-stars fs-1 text-warning"></i>
+
+            <h4 class="mt-3">
+                AI Resume Analysis
+            </h4>
+
+            <p class="text-muted">
+
+                Analyze and optimize your resume using
+                Google's Gemini AI.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card h-100 p-4 text-center">
+
+            <i class="bi bi-calendar-event fs-1 text-success"></i>
+
+            <h4 class="mt-3">
+                Smart Reminders
+            </h4>
+
+            <p class="text-muted">
+
+                Receive automatic interview reminder
+                emails before every interview.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- CTA -->
+
+<div class="card text-center p-5">
+
+    <h2 class="fw-bold">
+
+        Ready to accelerate your career?
+
+    </h2>
+
+    <p class="text-muted">
+
+        Join JobTracker AI and manage every application,
+        interview, and AI insight from one place.
+
+    </p>
+
+    {% if not current_user.is_authenticated %}
+
+    <div>
+
+        <a href="{{ url_for('auth.register') }}"
+           class="btn btn-primary btn-lg">
+
+            Create Free Account
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
 
 {% endblock %}

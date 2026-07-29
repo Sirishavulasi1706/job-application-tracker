@@ -6,125 +6,100 @@ Dashboard
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-
-```
-<div>
-
-    <h2 class="fw-bold">
-        👋 Welcome back, {{ current_user.name }}
-    </h2>
-
-    <p class="text-muted mb-0">
-        Here's an overview of your placement journey.
-    </p>
-
-</div>
-
-<a href="/add_application" class="btn btn-primary">
-    <i class="bi bi-plus-circle"></i>
-    Add Application
-</a>
-```
-
+<div class="card mb-5 border-0 shadow-lg">
+    <div class="card-body p-5">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-3">
+                    👋 Welcome back, {{ current_user.name }}
+                </h2>
+                <p class="text-muted mb-4">
+                    Keep tracking your applications, prepare for interviews,
+                    and let AI help you reach your dream job.
+                </p>
+                <a href="/add_application"
+                   class="btn btn-primary btn-lg">
+                    <i class="bi bi-plus-circle"></i>
+                    Add New Application
+                </a>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-graph-up-arrow text-primary"
+                   style="font-size:120px;"></i>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row g-4">
 
-```
-<div class="col-md-3">
+    <div class="col-md-3">
 
-    <div class="card text-center p-3 h-100">
+        <div class="card text-center p-3 h-100">
 
-        <i class="bi bi-briefcase-fill fs-1 text-primary"></i>
+            <i class="bi bi-briefcase-fill fs-1 text-primary"></i>
 
-        <h6 class="mt-3 text-muted">
-            Applications
-        </h6>
+            <h6 class="mt-3 text-muted">
+                Total Applications
+            </h6>
 
-        <h2 class="fw-bold">
-            {{ total_applications }}
-        </h2>
+            <h2 class="fw-bold">
+                {{ total_applications }}
+            </h2>
 
-    </div>
-
-</div>
-
-<div class="col-md-3">
-
-    <div class="card text-center p-3 h-100">
-
-        <i class="bi bi-file-earmark-person-fill fs-1 text-success"></i>
-
-        <h6 class="mt-3 text-muted">
-            Resume AI
-        </h6>
-
-        <h2 class="fw-bold">
-            {{ total_resume_analyses }}
-        </h2>
+        </div>
 
     </div>
 
-</div>
+    <div class="col-md-3">
 
-<div class="col-md-3">
+        <div class="card text-center p-3 h-100">
 
-    <div class="card text-center p-3 h-100">
+            <i class="bi bi-file-earmark-person-fill fs-1 text-success"></i>
 
-        <i class="bi bi-mic-fill fs-1 text-warning"></i>
+            <h6 class="mt-3 text-muted">
+                Resume Analyses
+            </h6>
 
-        <h6 class="mt-3 text-muted">
-            Interviews
-        </h6>
+            <h2 class="fw-bold">
+                {{ total_resume_analyses }}
+            </h2>
 
-        <h2 class="fw-bold">
-            {{ interviews }}
-        </h2>
-
-    </div>
-
-</div>
-
-<div class="col-md-3">
-
-    <div class="card text-center p-3 h-100">
-
-        <i class="bi bi-trophy-fill fs-1 text-danger"></i>
-
-        <h6 class="mt-3 text-muted">
-            Offers
-        </h6>
-
-        <h2 class="fw-bold">
-            {{ offers }}
-        </h2>
+        </div>
 
     </div>
 
-</div>
-```
+    <div class="col-md-3">
 
-</div>
+        <div class="card text-center p-3 h-100">
 
-<div class="row mt-5">
+            <i class="bi bi-mic-fill fs-1 text-warning"></i>
 
-```
-<div class="col-lg-7">
+            <h6 class="mt-3 text-muted">
+                Scheduled Interviews
+            </h6>
 
-    <div class="card">
+            <h2 class="fw-bold">
+                {{ interviews }}
+            </h2>
 
-        <div class="card-body">
+        </div>
 
-            <h4 class="mb-4">
-                🍩 Application Status
-            </h4>
+    </div>
 
-            <div style="height:320px">
+    <div class="col-md-3">
 
-                <canvas id="statusChart"></canvas>
+        <div class="card text-center p-3 h-100">
 
-            </div>
+            <i class="bi bi-trophy-fill fs-1 text-danger"></i>
+
+            <h6 class="mt-3 text-muted">
+                Job Offers
+            </h6>
+
+            <h2 class="fw-bold">
+                {{ offers }}
+            </h2>
 
         </div>
 
@@ -132,67 +107,21 @@ Dashboard
 
 </div>
 
-<div class="col-lg-5">
+<div class="row mt-5">
 
-    <div class="card h-100">
+    <div class="col-lg-7">
 
-        <div class="card-body">
+        <div class="card">
 
-            <h4 class="mb-4">
-                📊 Success Metrics
-            </h4>
+            <div class="card-body">
 
-            <label class="fw-semibold">
-                Offer Success Rate
-            </label>
+                <h4 class="mb-4">
+                    🍩 Application Status
+                </h4>
 
-            <div class="progress mb-3" style="height:20px">
+                <div style="height:320px">
 
-                <div
-                    class="progress-bar bg-success"
-                    style="width:{{ success_rate }}%;">
-
-                    {{ success_rate }}%
-
-                </div>
-
-            </div>
-
-            <label class="fw-semibold">
-                Interview Rate
-            </label>
-
-            <div class="progress mb-4" style="height:20px">
-
-                <div
-                    class="progress-bar bg-warning"
-                    style="width:{{ interview_rate }}%;">
-
-                    {{ interview_rate }}%
-
-                </div>
-
-            </div>
-
-            <div class="row text-center">
-
-                <div class="col-6">
-
-                    <h5 class="text-primary">
-                        {{ pending }}
-                    </h5>
-
-                    <small>Applied</small>
-
-                </div>
-
-                <div class="col-6">
-
-                    <h5 class="text-danger">
-                        {{ rejected }}
-                    </h5>
-
-                    <small>Rejected</small>
+                    <canvas id="statusChart"></canvas>
 
                 </div>
 
@@ -202,61 +131,73 @@ Dashboard
 
     </div>
 
-</div>
-```
+    <div class="col-lg-5">
 
-</div>
+        <div class="card h-100">
 
-<div class="row mt-5">
+            <div class="card-body">
 
-```
-<div class="col-lg-6">
+                <h4 class="mb-4">
+                    📊 Success Metrics
+                </h4>
 
-    <div class="card h-100">
+                <label class="fw-semibold">
+                    Offer Success Rate
+                </label>
 
-        <div class="card-body">
+                <div class="progress mb-3" style="height:20px">
 
-            <h4 class="mb-4">
-                🕒 Recent Applications
-            </h4>
+                    <div
+                        class="progress-bar bg-success"
+                        style="width:{{ success_rate }}%;">
 
-            {% if recent_applications %}
-
-                <div class="list-group list-group-flush">
-
-                    {% for app in recent_applications %}
-
-                    <div class="list-group-item">
-
-                        <strong>{{ app.company }}</strong>
-
-                        <br>
-
-                        <small class="text-muted">
-
-                            {{ app.role }}
-
-                        </small>
-
-                        <span class="float-end badge bg-primary">
-
-                            {{ app.status }}
-
-                        </span>
+                        {{ success_rate }}%
 
                     </div>
 
-                    {% endfor %}
+                </div>
+
+                <label class="fw-semibold">
+                    Interview Rate
+                </label>
+
+                <div class="progress mb-4" style="height:20px">
+
+                    <div
+                        class="progress-bar bg-warning"
+                        style="width:{{ interview_rate }}%;">
+
+                        {{ interview_rate }}%
+
+                    </div>
 
                 </div>
 
-            {% else %}
+                <div class="row text-center">
 
-                <p class="text-muted">
-                    No applications yet.
-                </p>
+                    <div class="col-6">
 
-            {% endif %}
+                        <h5 class="text-primary">
+                            {{ pending }}
+                        </h5>
+
+                        <small>Applied</small>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <h5 class="text-danger">
+                            {{ rejected }}
+                        </h5>
+
+                        <small>Rejected</small>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -264,40 +205,95 @@ Dashboard
 
 </div>
 
-<div class="col-lg-6">
+<div class="row mt-5">
 
-    <div class="card h-100">
+    <div class="col-lg-6">
 
-        <div class="card-body">
+        <div class="card h-100">
 
-            <h4 class="mb-4">
-                🤖 Latest Career Insights
-            </h4>
+            <div class="card-body">
 
-            {% if career_insights %}
+                <h4 class="mb-4">
+                    🕒 Recent Applications
+                </h4>
 
-                <div style="white-space:pre-wrap">
+                {% if recent_applications %}
 
-                    {{ career_insights }}
+                    <div class="list-group list-group-flush">
 
-                </div>
+                        {% for app in recent_applications %}
 
-            {% else %}
+                        <div class="list-group-item">
 
-                <p class="text-muted">
+                            <strong>{{ app.company }}</strong>
 
-                    Analyze a resume to generate AI career insights.
+                            <br>
 
-                </p>
+                            <small class="text-muted">
 
-            {% endif %}
+                                {{ app.role }}
+
+                            </small>
+
+                            <span class="float-end badge bg-primary">
+
+                                {{ app.status }}
+
+                            </span>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="text-muted">
+                        You haven't added any job applications yet. Click "Add New Application" to get started.
+                    </p>
+
+                {% endif %}
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
-```
+    <div class="col-lg-6">
+
+        <div class="card h-100">
+
+            <div class="card-body">
+
+                <h4 class="mb-4">
+                    🤖 Latest Career Insights
+                </h4>
+
+                {% if career_insights %}
+
+                    <div style="white-space:pre-wrap">
+
+                        {{ career_insights }}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="text-muted">
+
+                        No AI insights available yet. Upload and analyze your resume to receive personalized career recommendations.
+
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 

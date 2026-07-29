@@ -6,7 +6,8 @@ from wtforms import (
     SubmitField,
     TextAreaField,
     SelectField,
-    DateField
+    DateField,
+    TimeField
 )
 from wtforms.validators import (
     DataRequired,
@@ -125,3 +126,64 @@ class JobMatchForm(FlaskForm):
     )
 
     submit = SubmitField("Analyze Match")
+
+
+class InterviewReminderForm(FlaskForm):
+
+    application = SelectField(
+        "Application",
+        coerce=int,
+        validators=[DataRequired()]
+    )
+
+    interview_date = DateField(
+        "Interview Date",
+        validators=[DataRequired()]
+    )
+
+    interview_time = TimeField(
+        "Interview Time",
+        validators=[DataRequired()]
+    )
+
+    submit = SubmitField(
+        "Schedule Interview"
+    )
+
+
+class ForgotPasswordForm(FlaskForm):
+
+    email = StringField(
+        "Email",
+        validators=[
+            DataRequired(),
+            Email()
+        ]
+    )
+
+    submit = SubmitField(
+        "Send Reset Link"
+    )
+
+
+class ResetPasswordForm(FlaskForm):
+
+    password = PasswordField(
+        "New Password",
+        validators=[
+            DataRequired(),
+            Length(min=6)
+        ]
+    )
+
+    confirm_password = PasswordField(
+        "Confirm Password",
+        validators=[
+            DataRequired(),
+            EqualTo("password")
+        ]
+    )
+
+    submit = SubmitField(
+        "Reset Password"
+    )

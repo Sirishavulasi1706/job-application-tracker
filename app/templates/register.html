@@ -9,35 +9,39 @@ Register
 <div class="row justify-content-center">
     <div class="col-md-6">
 
-        <h2 class="mb-4">Create Account</h2>
+        <div class="card shadow form-card">
 
-        <form method="POST">
+            <h2 class="section-title">Create Account</h2>
 
-            {{ form.hidden_tag() }}
+            <form method="POST">
 
-            <div class="mb-3">
-                {{ form.name.label(class="form-label") }}
-                {{ form.name(class="form-control") }}
-            </div>
+                {{ form.hidden_tag() }}
 
-            <div class="mb-3">
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control") }}
-            </div>
+                <div class="mb-3">
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control") }}
+                </div>
 
-            <div class="mb-3">
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control") }}
-            </div>
+                <div class="mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control") }}
+                </div>
 
-            <div class="mb-3">
-                {{ form.confirm_password.label(class="form-label") }}
-                {{ form.confirm_password(class="form-control") }}
-            </div>
+                <div class="mb-3">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control") }}
+                </div>
 
-            {{ form.submit(class="btn btn-primary") }}
+                <div class="mb-3">
+                    {{ form.confirm_password.label(class="form-label") }}
+                    {{ form.confirm_password(class="form-control") }}
+                </div>
 
-        </form>
+                {{ form.submit(class="btn btn-primary") }}
+
+            </form>
+
+        </div>
 
     </div>
 </div>

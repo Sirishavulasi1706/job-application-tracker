@@ -19,12 +19,43 @@ class User(db.Model, UserMixin):
 
     password = db.Column(db.String(255), nullable=False)
 
+    email_verified = db.Column(
+        db.Boolean,
+        default=False,
+        nullable=False
+    )
+
+    verification_token = db.Column(
+        db.String(255),
+        unique=True
+    )
+
     applications = db.relationship(
         "JobApplication",
         backref="user",
         lazy=True,
         cascade="all, delete-orphan"
     )
+
+    reminders = db.relationship(
+        "InterviewReminder",
+        backref="user",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
+    # ----------------------------
+    # Password Reset
+    # ----------------------------
+
+    def get_reset_token(self):
+        from app.services.email_service import generate_reset_token
+        return generate_reset_token(self.email)
+
+    @staticmethod
+    def verify_reset_token(token):
+        from app.services.email_service import verify_reset_token
+        return verify_reset_token(token)
 
 
 class JobApplication(db.Model):
@@ -56,6 +87,13 @@ class JobApplication(db.Model):
         db.Integer,
         db.ForeignKey("users.id"),
         nullable=False
+    )
+
+    reminders = db.relationship(
+        "InterviewReminder",
+        backref="application",
+        lazy=True,
+        cascade="all, delete-orphan"
     )
 
 
@@ -111,6 +149,49 @@ class InterviewPreparation(db.Model):
 
     questions = db.Column(
         db.Text,
+        nullable=False
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=db.func.now()
+    )
+
+
+class InterviewReminder(db.Model):
+
+    __tablename__ = "interview_reminders"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    application_id = db.Column(
+        db.Integer,
+        db.ForeignKey("job_applications.id"),
+        nullable=False
+    )
+
+    interview_date = db.Column(
+        db.Date,
+        nullable=False
+    )
+
+    interview_time = db.Column(
+        db.Time,
+        nullable=False
+    )
+
+    reminder_sent = db.Column(
+        db.Boolean,
+        default=False,
         nullable=False
     )
 
