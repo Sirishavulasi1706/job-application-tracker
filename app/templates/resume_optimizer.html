@@ -1,4 +1,3 @@
-```html
 {% extends "base.html" %}
 
 {% block title %}
@@ -13,23 +12,26 @@ AI Resume Optimizer
 
         <div class="col-lg-10">
 
+            <!-- Optimizer Card -->
             <div class="card shadow border-0 rounded-4">
 
-                <div class="card-body">
+                <div class="card-body p-4">
 
                     <h2 class="mb-3">
                         📄 AI Resume Optimizer
                     </h2>
 
                     <p class="text-muted">
-                        Select one of your analyzed resumes and paste the job description to receive ATS optimization suggestions.
+                        Select one of your analyzed resumes and paste the job
+                        description to receive ATS optimization suggestions.
                     </p>
 
                     <form method="POST">
 
+                        <!-- Resume Selection -->
                         <div class="mb-3">
 
-                            <label class="form-label">
+                            <label class="form-label fw-semibold">
                                 Select Resume Analysis
                             </label>
 
@@ -44,7 +46,12 @@ AI Resume Optimizer
 
                                 {% for analysis in analyses %}
 
-                                <option value="{{ analysis.id }}">
+                                <option
+                                    value="{{ analysis.id }}"
+                                    {% if selected_analysis and selected_analysis.id == analysis.id %}
+                                        selected
+                                    {% endif %}
+                                >
                                     {{ analysis.resume_filename }}
                                 </option>
 
@@ -54,9 +61,10 @@ AI Resume Optimizer
 
                         </div>
 
+                        <!-- Job Description -->
                         <div class="mb-3">
 
-                            <label class="form-label">
+                            <label class="form-label fw-semibold">
                                 Job Description
                             </label>
 
@@ -69,8 +77,12 @@ AI Resume Optimizer
 
                         </div>
 
-                        <button class="btn btn-success btn-lg">
+                        <button
+                            type="submit"
+                            class="btn btn-success btn-lg">
+
                             🚀 Optimize Resume
+
                         </button>
 
                     </form>
@@ -79,17 +91,33 @@ AI Resume Optimizer
 
             </div>
 
+
+            <!-- Current Optimization Result -->
             {% if optimization %}
 
             <div class="card shadow mt-4 border-0 rounded-4">
 
-                <div class="card-body">
+                <div class="card-body p-4">
 
                     <h3 class="mb-3">
                         🤖 AI Optimization Result
                     </h3>
 
-                    <div style="white-space: pre-wrap;">{{ optimization }}</div>
+                    {% if selected_analysis %}
+
+                    <div class="alert alert-primary">
+
+                        <strong>Resume:</strong>
+
+                        {{ selected_analysis.resume_filename }}
+
+                    </div>
+
+                    {% endif %}
+
+                    <div style="white-space: pre-wrap;">
+{{ optimization }}
+                    </div>
 
                 </div>
 
@@ -97,11 +125,13 @@ AI Resume Optimizer
 
             {% endif %}
 
+
+            <!-- Previous Optimizations -->
             {% if history %}
 
             <div class="card shadow mt-4 border-0 rounded-4">
 
-                <div class="card-body">
+                <div class="card-body p-4">
 
                     <h3 class="mb-4">
                         📚 Previous Resume Optimizations
@@ -109,15 +139,72 @@ AI Resume Optimizer
 
                     {% for item in history %}
 
-                    <div class="border rounded p-3 mb-4">
+                    <div class="border rounded-4 p-4 mb-4">
 
-                        <small class="text-muted">
-                            {{ item.created_at.strftime("%d %b %Y %H:%M") }}
-                        </small>
+                        <!-- Resume Name -->
+                        <div class="mb-2">
+
+                            <strong>
+                                📄 Resume:
+                            </strong>
+
+                            <span class="text-primary">
+                                {{ item.resume_filename }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- Date -->
+                        <div class="mb-3">
+
+                            <small class="text-muted">
+
+                                🕒
+                                {{ item.created_at.strftime("%d %b %Y %H:%M") }}
+
+                            </small>
+
+                        </div>
+
+
+                        <!-- Job Description -->
+                        <div class="mb-3">
+
+                            <strong>
+                                💼 Job Description:
+                            </strong>
+
+                            <div
+                                class="mt-2 p-3 bg-light rounded"
+                                style="white-space: pre-wrap;">
+
+                                {{ item.job_description }}
+
+                            </div>
+
+                        </div>
+
 
                         <hr>
 
-                        <div style="white-space: pre-wrap;">{{ item.optimization }}</div>
+
+                        <!-- Optimization -->
+                        <div>
+
+                            <strong>
+                                🤖 AI Optimization:
+                            </strong>
+
+                            <div
+                                class="mt-2"
+                                style="white-space: pre-wrap;">
+
+                                {{ item.optimization }}
+
+                            </div>
+
+                        </div>
 
                     </div>
 
@@ -136,4 +223,3 @@ AI Resume Optimizer
 </div>
 
 {% endblock %}
-```

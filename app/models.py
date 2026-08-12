@@ -233,3 +233,153 @@ class ResumeOptimization(db.Model):
         db.DateTime,
         default=db.func.now()
     )
+
+
+class CoverLetter(db.Model):
+
+    __tablename__ = "cover_letters"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    company = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    role = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    job_description = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    cover_letter = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=db.func.now()
+    )
+
+
+class ResumeBuilder(db.Model):
+
+    __tablename__ = "resume_builders"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    full_name = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    email = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    phone = db.Column(
+        db.String(50)
+    )
+
+    linkedin = db.Column(
+        db.String(255)
+    )
+
+    github = db.Column(
+        db.String(255)
+    )
+
+    portfolio = db.Column(
+        db.String(255)
+    )
+
+    education = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    skills = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    experience = db.Column(
+        db.Text
+    )
+
+    projects = db.Column(
+        db.Text
+    )
+
+    certifications = db.Column(
+        db.Text
+    )
+
+    achievements = db.Column(
+        db.Text
+    )
+
+    generated_resume = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=db.func.now()
+    )
+
+
+class CareerChat(db.Model):
+
+    __tablename__ = "career_chats"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    user_message = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    ai_response = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=db.func.now()
+    )

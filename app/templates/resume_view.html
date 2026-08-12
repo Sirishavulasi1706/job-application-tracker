@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}
+View Resume
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-body p-5">
+
+            <div class="d-flex justify-content-between mb-4">
+
+                <h2>
+
+                    {{ resume.full_name }}
+
+                </h2>
+
+                <div>
+
+                    <a
+                        href="{{ url_for('resume_builder.download_resume', id=resume.id) }}"
+                        class="btn btn-success">
+
+                        Download PDF
+
+                    </a>
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="copyResume()">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div
+                id="resumeText"
+                class="border rounded p-4 bg-light"
+                style="white-space: pre-wrap;">{{ resume.generated_resume }}</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function copyResume(){
+
+    navigator.clipboard.writeText(
+
+        document.getElementById(
+
+            "resumeText"
+
+        ).innerText
+
+    );
+
+    alert("Resume copied!");
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Cover Letter Generator
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-10">
+
+        <div class="card shadow-lg">
+
+            <div class="card-body p-5">
+
+                <h2 class="fw-bold mb-4">
+
+                    ✉️ AI Cover Letter Generator
+
+                </h2>
+
+                <p class="text-muted mb-4">
+
+                    Enter the company, role, and job description.
+                    Gemini AI will generate a personalized,
+                    ATS-friendly cover letter.
+
+                </p>
+
+                <form method="POST">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Company Name
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="company"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Job Role
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="role"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+
+                            Job Description
+
+                        </label>
+
+                        <textarea
+                            name="job_description"
+                            rows="10"
+                            class="form-control"
+                            required></textarea>
+
+                    </div>
+
+                    <button
+                        class="btn btn-primary btn-lg">
+
+                        <i class="bi bi-stars"></i>
+
+                        Generate Cover Letter
+
+                    </button>
+
+                </form>
+
+                {% if generated_letter %}
+
+                <hr class="my-5">
+
+                <h3 class="fw-bold">
+
+                    Generated Cover Letter
+
+                </h3>
+
+                <div class="mt-4">
+                    <div class="mb-3">
+                        <button
+                            class="btn btn-success me-2"
+                            onclick="copyCoverLetter()">
+                            <i class="bi bi-clipboard"></i>
+                            Copy to Clipboard
+                        </button>
+                        <form
+                            action="{{ url_for('cover_letter.download_cover_letter') }}"
+                            method="POST"
+                            class="d-inline">
+                            <input
+                                type="hidden"
+                                name="cover_letter"
+                                value="{{ generated_letter }}">
+                            <button
+                                type="submit"
+                                class="btn btn-danger">
+                                <i class="bi bi-file-earmark-pdf"></i>
+                                Download PDF
+                            </button>
+                        </form>
+                    </div>
+                    <div
+                        id="coverLetter"
+                        class="border rounded p-4 bg-light"
+                        style="white-space: pre-wrap;">{{ generated_letter.strip() }}</div>
+                </div>
+
+                <script>
+
+                function copyCoverLetter(){
+
+                    const text = document.getElementById("coverLetter").innerText;
+
+                    navigator.clipboard.writeText(text);
+
+                    alert("Cover letter copied successfully!");
+
+                }
+
+                </script>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

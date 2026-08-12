@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+Resume History
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="fw-bold mb-4">
+        Resume History
+    </h2>
+
+    {% if resumes %}
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Name</th>
+
+                        <th>Date</th>
+
+                        <th width="260">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for resume in resumes %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ resume.full_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ resume.created_at.strftime("%d %b %Y %I:%M %p") }}
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('resume_builder.view_resume', id=resume.id) }}"
+                                class="btn btn-primary btn-sm">
+
+                                View
+
+                            </a>
+
+                            <a
+                                href="{{ url_for('resume_builder.download_resume', id=resume.id) }}"
+                                class="btn btn-success btn-sm">
+
+                                PDF
+
+                            </a>
+
+                            <a
+                                href="{{ url_for('resume_builder.delete_resume', id=resume.id) }}"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete this resume?')">
+
+                                Delete
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info">
+
+        No resumes generated yet.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

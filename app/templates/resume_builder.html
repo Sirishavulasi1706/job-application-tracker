@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Resume Builder
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-11">
+
+        <div class="card shadow-lg">
+
+            <div class="card-body p-5">
+
+                <h2 class="fw-bold mb-4">
+                    📄 AI Resume Builder
+                </h2>
+
+                <p class="text-muted mb-4">
+                    Fill in your details below and let Gemini AI generate a professional ATS-friendly resume.
+                </p>
+
+                <form method="POST">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">Full Name</label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="full_name"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">Email</label>
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">Phone</label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="phone">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">LinkedIn</label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="linkedin">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">GitHub</label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="github">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">Portfolio</label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="portfolio">
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Education</label>
+
+                        <textarea
+                            class="form-control"
+                            rows="4"
+                            name="education"
+                            required></textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Skills</label>
+
+                        <textarea
+                            class="form-control"
+                            rows="4"
+                            name="skills"
+                            required></textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Experience</label>
+
+                        <textarea
+                            class="form-control"
+                            rows="5"
+                            name="experience"></textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Projects</label>
+
+                        <textarea
+                            class="form-control"
+                            rows="5"
+                            name="projects"></textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Certifications</label>
+
+                        <textarea
+                            class="form-control"
+                            rows="3"
+                            name="certifications"></textarea>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label">Achievements</label>
+
+                        <textarea
+                            class="form-control"
+                            rows="3"
+                            name="achievements"></textarea>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-lg">
+
+                        <i class="bi bi-stars"></i>
+
+                        Generate Resume
+
+                    </button>
+
+                    <a
+                        href="{{ url_for('resume_builder.history') }}"
+                        class="btn btn-outline-secondary btn-lg ms-2">
+
+                        Resume History
+
+                    </a>
+
+                </form>
+
+                {% if generated_resume %}
+
+                <hr class="my-5">
+
+                <h3 class="fw-bold">
+
+                    Generated Resume
+
+                </h3>
+
+                <div class="mb-3 mt-4">
+
+                    <button
+                        class="btn btn-success me-2"
+                        onclick="copyResume()">
+
+                        <i class="bi bi-clipboard"></i>
+
+                        Copy Resume
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="resumeText"
+                    class="border rounded p-4 bg-light"
+                    style="white-space: pre-wrap;">{{ generated_resume }}</div>
+
+                <script>
+
+                    function copyResume() {
+
+                        const text =
+                            document.getElementById(
+                                "resumeText"
+                            ).innerText;
+
+                        navigator.clipboard.writeText(text);
+
+                        alert("Resume copied successfully!");
+
+                    }
+
+                </script>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

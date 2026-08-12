@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Career Assistant
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-10">
+
+        <div class="card shadow-lg">
+
+            <div class="card-body p-5">
+
+                <h2 class="fw-bold mb-4">
+
+                    🤖 AI Career Assistant
+
+                </h2>
+
+                <p class="text-muted mb-4">
+
+                    Ask career, interview, resume, placement, or job-related questions.
+
+                </p>
+
+                <form method="POST">
+
+                    <div class="mb-4">
+
+                        <textarea
+                            class="form-control"
+                            rows="6"
+                            name="message"
+                            placeholder="Ask anything about your career..."
+                            required></textarea>
+
+                    </div>
+
+                    <button
+                        class="btn btn-primary btn-lg">
+
+                        <i class="bi bi-send"></i>
+
+                        Ask AI
+
+                    </button>
+
+                    <a
+                        href="{{ url_for('career_chat.history') }}"
+                        class="btn btn-outline-secondary btn-lg ms-2">
+
+                        Chat History
+
+                    </a>
+
+                </form>
+
+                {% if answer %}
+
+                <hr class="my-5">
+
+                <h3>
+
+                    AI Response
+
+                </h3>
+
+                <button
+                    class="btn btn-success mb-3"
+                    onclick="copyResponse()">
+
+                    Copy
+
+                </button>
+
+                <div
+                    id="response"
+                    class="border rounded p-4 bg-light"
+                    style="white-space: pre-wrap;">
+
+                    {{ answer }}
+
+                </div>
+
+                <script>
+
+                function copyResponse(){
+
+                    navigator.clipboard.writeText(
+
+                        document.getElementById(
+
+                            "response"
+
+                        ).innerText
+
+                    );
+
+                    alert("Copied!");
+
+                }
+
+                </script>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

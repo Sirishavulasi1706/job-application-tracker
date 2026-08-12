@@ -39,6 +39,9 @@ def create_app():
     from app.routes.interview import interview
     from app.routes.resume_optimizer import resume_optimizer
     from app.routes.reminders import reminders
+    from app.routes.cover_letter import cover_letter
+    from app.routes.resume_builder import resume_builder
+    from app.routes.career_chat import career_chat
 
     app.register_blueprint(main)
     app.register_blueprint(auth)
@@ -50,6 +53,9 @@ def create_app():
     app.register_blueprint(interview)
     app.register_blueprint(resume_optimizer)
     app.register_blueprint(reminders)
+    app.register_blueprint(cover_letter)
+    app.register_blueprint(resume_builder)
+    app.register_blueprint(career_chat)
 
     from app import models
 

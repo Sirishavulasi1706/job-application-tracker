@@ -84,7 +84,7 @@ class ApplicationForm(FlaskForm):
         choices=[
             ("Applied", "Applied"),
             ("Interview", "Interview"),
-            ("Offer", "Offer"),
+            ("Offered", "Offered"),
             ("Rejected", "Rejected")
         ],
         validators=[DataRequired()]
