@@ -59,7 +59,7 @@ def create_app():
 
     from app import models
 
-    start_scheduler(app)
+    # start_scheduler(app)
 
 
     @app.errorhandler(404)
