@@ -7,12 +7,22 @@ from itsdangerous import URLSafeTimedSerializer
 from app import mail
 
 
+from flask import current_app
+
+def get_serializer():
+    secret_key = None
+    try:
+        if current_app:
+            secret_key = current_app.config.get("SECRET_KEY")
+    except Exception:
+        pass
+    if not secret_key:
+        secret_key = os.getenv("SECRET_KEY", "default-fallback-secret-key-12345")
+    return URLSafeTimedSerializer(secret_key)
+
+
 def generate_verification_token(email):
-
-    serializer = URLSafeTimedSerializer(
-        os.getenv("SECRET_KEY")
-    )
-
+    serializer = get_serializer()
     return serializer.dumps(
         email,
         salt="email-verification"
@@ -20,24 +30,17 @@ def generate_verification_token(email):
 
 
 def verify_verification_token(token, expiration=3600):
-
-    serializer = URLSafeTimedSerializer(
-        os.getenv("SECRET_KEY")
-    )
-
+    serializer = get_serializer()
     try:
-
         email = serializer.loads(
             token,
             salt="email-verification",
             max_age=expiration
         )
-
         return email
-
     except Exception:
-
         return None
+
 
 
 def send_verification_email(user):
@@ -84,9 +87,7 @@ JobTracker AI
 
 
 def generate_reset_token(email):
-    serializer = URLSafeTimedSerializer(
-        os.getenv("SECRET_KEY")
-    )
+    serializer = get_serializer()
     return serializer.dumps(
         email,
         salt="password-reset"
@@ -94,9 +95,7 @@ def generate_reset_token(email):
 
 
 def verify_reset_token(token, expiration=3600):
-    serializer = URLSafeTimedSerializer(
-        os.getenv("SECRET_KEY")
-    )
+    serializer = get_serializer()
     try:
         email = serializer.loads(
             token,
@@ -106,6 +105,7 @@ def verify_reset_token(token, expiration=3600):
         return email
     except Exception:
         return None
+
 
 
 def send_password_reset_email(user):
