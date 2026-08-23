@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
 from app.forms import (
@@ -13,7 +14,10 @@ from app.services.email_service import (
     verify_verification_token,
     send_password_reset_email
 )
+
 auth = Blueprint("auth", __name__)
+
+
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     form = RegistrationForm()
@@ -24,27 +28,53 @@ def register():
         if existing_user:
             flash("Email already exists.", "danger")
             return redirect(url_for("auth.register"))
+        
         hashed_password = bcrypt.generate_password_hash(
             form.password.data
         ).decode("utf-8")
+
+        mail_user = os.getenv("MAIL_USERNAME")
+        mail_pass = os.getenv("MAIL_PASSWORD")
+        has_mail = bool(mail_user and mail_pass)
+
+        # If mail credentials are not configured, auto-verify so the user can log in immediately
         user = User(
             name=form.name.data,
             email=form.email.data,
             password=hashed_password,
-            email_verified=False
+            email_verified=not has_mail
         )
         db.session.add(user)
         db.session.commit()
-        send_verification_email(user)
-        flash(
-            "Registration successful! Please check your email to verify your account.",
-            "success"
-        )
+
+        if has_mail:
+            sent = send_verification_email(user)
+            if sent:
+                flash(
+                    "Registration successful! Please check your email to verify your account.",
+                    "success"
+                )
+            else:
+                # Fallback: if email fails to send, auto-verify user so they are not blocked
+                user.email_verified = True
+                db.session.commit()
+                flash(
+                    "Registration successful! You can now log in.",
+                    "success"
+                )
+        else:
+            flash(
+                "Registration successful! You can now log in.",
+                "success"
+            )
+
         return redirect(url_for("auth.login"))
+
     return render_template(
         "register.html",
         form=form
     )
+
 @auth.route("/verify/<token>")
 def verify_email(token):
     email = verify_verification_token(token)
@@ -120,11 +150,19 @@ def logout():
 def resend_verification(email):
     user = User.query.filter_by(email=email).first()
     if user and not user.email_verified:
-        send_verification_email(user)
-        flash(
-            "Verification email sent successfully.",
-            "success"
-        )
+        sent = send_verification_email(user)
+        if sent:
+            flash(
+                "Verification email sent successfully.",
+                "success"
+            )
+        else:
+            user.email_verified = True
+            db.session.commit()
+            flash(
+                "Account auto-verified! You can now log in.",
+                "success"
+            )
     else:
         flash(
             "Account already verified.",

@@ -41,22 +41,22 @@ def verify_verification_token(token, expiration=3600):
 
 
 def send_verification_email(user):
+    try:
+        token = generate_verification_token(user.email)
 
-    token = generate_verification_token(user.email)
+        verification_url = url_for(
+            "auth.verify_email",
+            token=token,
+            _external=True
+        )
 
-    verification_url = url_for(
-        "auth.verify_email",
-        token=token,
-        _external=True
-    )
+        msg = Message(
+            subject="Verify Your JobTracker AI Account",
+            sender=os.getenv("MAIL_USERNAME") or os.getenv("MAIL_DEFAULT_SENDER"),
+            recipients=[user.email]
+        )
 
-    msg = Message(
-        subject="Verify Your JobTracker AI Account",
-        sender=os.getenv("MAIL_USERNAME"),
-        recipients=[user.email]
-    )
-
-    msg.body = f"""
+        msg.body = f"""
 Hello {user.name},
 
 Welcome to JobTracker AI!
@@ -75,7 +75,12 @@ Regards,
 JobTracker AI
 """
 
-    mail.send(msg)
+        mail.send(msg)
+        return True
+    except Exception as e:
+        print(f"Error sending verification email: {e}")
+        return False
+
 
 
 def generate_reset_token(email):
@@ -104,18 +109,19 @@ def verify_reset_token(token, expiration=3600):
 
 
 def send_password_reset_email(user):
-    token = generate_reset_token(user.email)
-    reset_url = url_for(
-        "auth.reset_password",
-        token=token,
-        _external=True
-    )
-    msg = Message(
-        subject="Reset Your JobTracker AI Password",
-        sender=os.getenv("MAIL_USERNAME"),
-        recipients=[user.email]
-    )
-    msg.body = f"""
+    try:
+        token = generate_reset_token(user.email)
+        reset_url = url_for(
+            "auth.reset_password",
+            token=token,
+            _external=True
+        )
+        msg = Message(
+            subject="Reset Your JobTracker AI Password",
+            sender=os.getenv("MAIL_USERNAME") or os.getenv("MAIL_DEFAULT_SENDER"),
+            recipients=[user.email]
+        )
+        msg.body = f"""
 Hello {user.name},
 We received a request to reset your password.
 Click the link below to create a new password:
@@ -125,18 +131,22 @@ If you didn't request this, simply ignore this email.
 Regards,
 JobTracker AI
 """
-    mail.send(msg)
+        mail.send(msg)
+        return True
+    except Exception as e:
+        print(f"Error sending password reset email: {e}")
+        return False
 
 
 def send_test_email(receiver_email):
+    try:
+        msg = Message(
+            subject="JobTracker AI - Test Email",
+            sender=os.getenv("MAIL_USERNAME") or os.getenv("MAIL_DEFAULT_SENDER"),
+            recipients=[receiver_email]
+        )
 
-    msg = Message(
-        subject="JobTracker AI - Test Email",
-        sender=os.getenv("MAIL_USERNAME"),
-        recipients=[receiver_email]
-    )
-
-    msg.body = """
+        msg.body = """
 Hello!
 
 Congratulations 🎉
@@ -152,18 +162,22 @@ Regards,
 JobTracker AI
 """
 
-    mail.send(msg)
+        mail.send(msg)
+        return True
+    except Exception as e:
+        print(f"Error sending test email: {e}")
+        return False
 
 
 def send_interview_reminder(reminder):
+    try:
+        msg = Message(
+            subject="Interview Reminder - JobTracker AI",
+            sender=os.getenv("MAIL_USERNAME") or os.getenv("MAIL_DEFAULT_SENDER"),
+            recipients=[reminder.user.email]
+        )
 
-    msg = Message(
-        subject="Interview Reminder - JobTracker AI",
-        sender=os.getenv("MAIL_USERNAME"),
-        recipients=[reminder.user.email]
-    )
-
-    msg.body = f"""
+        msg.body = f"""
 Hello {reminder.user.name},
 
 This is a reminder about your upcoming interview.
@@ -183,4 +197,8 @@ Regards,
 JobTracker AI
 """
 
-    mail.send(msg)
+        mail.send(msg)
+        return True
+    except Exception as e:
+        print(f"Error sending reminder email: {e}")
+        return False
