@@ -52,6 +52,7 @@ def send_verification_email(user):
 
     msg = Message(
         subject="Verify Your JobTracker AI Account",
+        sender=os.getenv("MAIL_USERNAME"),
         recipients=[user.email]
     )
 
@@ -111,6 +112,7 @@ def send_password_reset_email(user):
     )
     msg = Message(
         subject="Reset Your JobTracker AI Password",
+        sender=os.getenv("MAIL_USERNAME"),
         recipients=[user.email]
     )
     msg.body = f"""
@@ -130,6 +132,7 @@ def send_test_email(receiver_email):
 
     msg = Message(
         subject="JobTracker AI - Test Email",
+        sender=os.getenv("MAIL_USERNAME"),
         recipients=[receiver_email]
     )
 
@@ -156,6 +159,7 @@ def send_interview_reminder(reminder):
 
     msg = Message(
         subject="Interview Reminder - JobTracker AI",
+        sender=os.getenv("MAIL_USERNAME"),
         recipients=[reminder.user.email]
     )
 
