@@ -25,10 +25,7 @@ def register():
         existing_user = User.query.filter_by(
             email=form.email.data
         ).first()
-        if existing_user:
-            flash("Email already exists.", "danger")
-            return redirect(url_for("auth.register"))
-        
+
         hashed_password = bcrypt.generate_password_hash(
             form.password.data
         ).decode("utf-8")
@@ -37,7 +34,31 @@ def register():
         mail_pass = os.getenv("MAIL_PASSWORD")
         has_mail = bool(mail_user and mail_pass)
 
-        # If mail credentials are not configured, auto-verify so the user can log in immediately
+        if existing_user:
+            if existing_user.email_verified:
+                flash("Email already registered. Please log in.", "info")
+                return redirect(url_for("auth.login"))
+            else:
+                # Update unverified user with new credentials
+                existing_user.name = form.name.data
+                existing_user.password = hashed_password
+                if not has_mail:
+                    existing_user.email_verified = True
+                    db.session.commit()
+                    flash("Account verified successfully! You can now log in.", "success")
+                    return redirect(url_for("auth.login"))
+                else:
+                    db.session.commit()
+                    sent = send_verification_email(existing_user)
+                    if sent:
+                        flash("A verification link has been sent to your email.", "info")
+                    else:
+                        existing_user.email_verified = True
+                        db.session.commit()
+                        flash("Account registered successfully! You can now log in.", "success")
+                    return redirect(url_for("auth.login"))
+
+        # Create new user
         user = User(
             name=form.name.data,
             email=form.email.data,
@@ -104,6 +125,7 @@ def verify_email(token):
         "success"
     )
     return redirect(url_for("auth.login"))
+
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
@@ -115,6 +137,14 @@ def login():
             user.password,
             form.password.data
         ):
+            mail_user = os.getenv("MAIL_USERNAME")
+            mail_pass = os.getenv("MAIL_PASSWORD")
+            has_mail = bool(mail_user and mail_pass)
+
+            if not user.email_verified and not has_mail:
+                user.email_verified = True
+                db.session.commit()
+
             if not user.email_verified:
                 flash(
                     "Please verify your email before logging in.",
@@ -137,6 +167,7 @@ def login():
         "login.html",
         form=form
     )
+
 @auth.route("/logout")
 @login_required
 def logout():

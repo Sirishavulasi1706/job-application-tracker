@@ -47,11 +47,16 @@ def send_verification_email(user):
     try:
         token = generate_verification_token(user.email)
 
-        verification_url = url_for(
-            "auth.verify_email",
-            token=token,
-            _external=True
-        )
+        try:
+            from flask import request
+            base_url = request.host_url.rstrip('/')
+            verification_url = f"{base_url}{url_for('auth.verify_email', token=token)}"
+        except Exception:
+            verification_url = url_for(
+                "auth.verify_email",
+                token=token,
+                _external=True
+            )
 
         msg = Message(
             subject="Verify Your JobTracker AI Account",
@@ -111,11 +116,16 @@ def verify_reset_token(token, expiration=3600):
 def send_password_reset_email(user):
     try:
         token = generate_reset_token(user.email)
-        reset_url = url_for(
-            "auth.reset_password",
-            token=token,
-            _external=True
-        )
+        try:
+            from flask import request
+            base_url = request.host_url.rstrip('/')
+            reset_url = f"{base_url}{url_for('auth.reset_password', token=token)}"
+        except Exception:
+            reset_url = url_for(
+                "auth.reset_password",
+                token=token,
+                _external=True
+            )
         msg = Message(
             subject="Reset Your JobTracker AI Password",
             sender=os.getenv("MAIL_USERNAME") or os.getenv("MAIL_DEFAULT_SENDER"),
