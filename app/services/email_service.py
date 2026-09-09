@@ -50,17 +50,20 @@ def send_mail_message(subject, recipient, body_text):
     if resend_key:
         try:
             resend.api_key = resend_key
-            sender = os.getenv("MAIL_DEFAULT_SENDER") or "JobTracker AI <onboarding@resend.dev>"
+            # Resend free sandbox requires sending from onboarding@resend.dev
+            sender = "JobTracker AI <onboarding@resend.dev>"
             params = {
                 "from": sender,
-                "to": [recipient],
+                "to": [recipient.strip()],
                 "subject": subject,
                 "text": body_text,
             }
-            resend.Emails.send(params)
+            print(f"--> Sending email via Resend to {recipient}...", flush=True)
+            res = resend.Emails.send(params)
+            print(f"--> Resend response: {res}", flush=True)
             return True
         except Exception as e:
-            print(f"Error sending email with Resend: {e}")
+            print(f"--> Error sending email with Resend: {e}", flush=True)
             return False
 
     # Fallback to Flask-Mail SMTP if credentials exist

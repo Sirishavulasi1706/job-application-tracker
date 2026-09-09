@@ -205,9 +205,8 @@ def forgot_password():
 
     if form.validate_on_submit():
 
-        user = User.query.filter_by(
-            email=form.email.data
-        ).first()
+        clean_email = form.email.data.strip()
+        user = User.query.filter(User.email.ilike(clean_email)).first()
 
         if user:
 
