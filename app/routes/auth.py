@@ -30,9 +30,7 @@ def register():
             form.password.data
         ).decode("utf-8")
 
-        mail_user = os.getenv("MAIL_USERNAME")
-        mail_pass = os.getenv("MAIL_PASSWORD")
-        has_mail = bool(mail_user and mail_pass)
+        has_mail = bool(os.getenv("RESEND_API_KEY") or (os.getenv("MAIL_USERNAME") and os.getenv("MAIL_PASSWORD")))
 
         if existing_user:
             if existing_user.email_verified:
@@ -137,9 +135,7 @@ def login():
             user.password,
             form.password.data
         ):
-            mail_user = os.getenv("MAIL_USERNAME")
-            mail_pass = os.getenv("MAIL_PASSWORD")
-            has_mail = bool(mail_user and mail_pass)
+            has_mail = bool(os.getenv("RESEND_API_KEY") or (os.getenv("MAIL_USERNAME") and os.getenv("MAIL_PASSWORD")))
 
             if not user.email_verified and not has_mail:
                 user.email_verified = True
